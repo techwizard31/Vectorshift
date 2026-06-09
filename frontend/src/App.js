@@ -1,13 +1,12 @@
-import { PipelineToolbar } from './toolbar';
-import { PipelineUI } from './ui';
-import { SubmitButton } from './submit';
+import React from 'react';
+import { PipelineToolbar } from './toolbar.tsx';
+import { PipelineUI } from './ui.tsx';
 
 function App() {
   return (
-    <div>
+    <div className="w-screen h-screen overflow-hidden flex flex-col bg-neutral-50">
       <PipelineToolbar />
       <PipelineUI />
-      <SubmitButton />
     </div>
   );
 }
