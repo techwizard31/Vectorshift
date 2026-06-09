@@ -4,7 +4,7 @@ import { BaseNode, NodeSchema } from './BaseNode.tsx';
 const API_SCHEMA: NodeSchema = {
   title: 'API Request Gateway',
   icon: '⚡',
-  color: 'bg-blue-50/50 text-blue-700',
+  color: 'hdr-api',
   fields: [
     { type: 'select', key: 'method', label: 'HTTP Method', default: 'POST', options: [{ label: 'GET', value: 'GET' }, { label: 'POST', value: 'POST' }] },
     { type: 'text', key: 'url', label: 'Target URL', default: 'https://api.vectorshift.ai/v1' }
@@ -15,7 +15,7 @@ const API_SCHEMA: NodeSchema = {
 const ROUTER_SCHEMA: NodeSchema = {
   title: 'Conditional Router',
   icon: '🔀',
-  color: 'bg-amber-50/50 text-amber-700',
+  color: 'hdr-router',
   fields: [{ type: 'text', key: 'condition', label: 'Condition Syntax', default: 'input === true' }],
   handles: [{ id: 'in', type: 'target', position: 'Left' }, { id: 'true', type: 'source', position: 'Right' }, { id: 'false', type: 'source', position: 'Right' }]
 };
@@ -23,7 +23,7 @@ const ROUTER_SCHEMA: NodeSchema = {
 const PARSER_SCHEMA: NodeSchema = {
   title: 'JSON Schema Parser',
   icon: '📦',
-  color: 'bg-cyan-50/50 text-cyan-700',
+  color: 'hdr-parser',
   fields: [{ type: 'text', key: 'path', label: 'Extraction Path', default: '$.data.payload' }],
   handles: [{ id: 'raw', type: 'target', position: 'Left' }, { id: 'parsed', type: 'source', position: 'Right' }]
 };
@@ -31,7 +31,7 @@ const PARSER_SCHEMA: NodeSchema = {
 const AUTH_SCHEMA: NodeSchema = {
   title: 'Bearer Token Auth',
   icon: '🔐',
-  color: 'bg-slate-50/50 text-slate-700',
+  color: 'hdr-auth',
   fields: [{ type: 'text', key: 'token', label: 'Secret Token Pass', default: 'ENV_SECRET' }],
   handles: [{ id: 'auth-out', type: 'source', position: 'Right' }]
 };
@@ -39,7 +39,7 @@ const AUTH_SCHEMA: NodeSchema = {
 const DELAY_SCHEMA: NodeSchema = {
   title: 'Delay Timer Execution',
   icon: '⏱',
-  color: 'bg-orange-50/50 text-orange-700',
+  color: 'hdr-delay',
   fields: [{ type: 'number', key: 'ms', label: 'Wait Interval (ms)', default: 1000 }],
   handles: [{ id: 'in', type: 'target', position: 'Left' }, { id: 'out', type: 'source', position: 'Right' }]
 };

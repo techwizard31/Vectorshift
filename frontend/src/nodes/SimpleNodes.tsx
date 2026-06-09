@@ -4,7 +4,7 @@ import { BaseNode, NodeSchema } from './BaseNode.tsx';
 const INPUT_SCHEMA: NodeSchema = {
   title: 'Input Trigger',
   icon: '📥',
-  color: 'bg-emerald-50/50 text-emerald-700',
+  color: 'hdr-input', // Targets direct plain CSS color layouts
   fields: [
     { type: 'text', key: 'inputName', label: 'Field Name', default: 'input_1' },
     { type: 'select', key: 'inputType', label: 'Data Type', default: 'Text', options: [{ label: 'Text', value: 'Text' }, { label: 'File', value: 'File' }] }
@@ -15,7 +15,7 @@ const INPUT_SCHEMA: NodeSchema = {
 const OUTPUT_SCHEMA: NodeSchema = {
   title: 'Output Response',
   icon: '📤',
-  color: 'bg-rose-50/50 text-rose-700',
+  color: 'hdr-output',
   fields: [
     { type: 'text', key: 'outputName', label: 'Output Name', default: 'response_data' },
     { type: 'select', key: 'outputType', label: 'Format Type', default: 'JSON', options: [{ label: 'JSON', value: 'JSON' }, { label: 'Plain Text', value: 'Plain Text' }] }
@@ -26,7 +26,7 @@ const OUTPUT_SCHEMA: NodeSchema = {
 const LLM_SCHEMA: NodeSchema = {
   title: 'LLM Engine',
   icon: '🧠',
-  color: 'bg-violet-50/50 text-violet-700',
+  color: 'hdr-llm',
   fields: [
     { type: 'select', key: 'model', label: 'Model Core', default: 'gpt-4o', options: [{ label: 'GPT-4o', value: 'gpt-4o' }, { label: 'Llama-3-70B', value: 'llama3' }] }
   ],

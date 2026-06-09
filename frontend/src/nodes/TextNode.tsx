@@ -5,14 +5,13 @@ import { useStore } from '../store.ts';
 const MIN_WIDTH = 220;
 const MAX_WIDTH = 600;
 const MIN_HEIGHT = 90;
-const CHAR_WIDTH_ESTIMATE = 8.5; // Optimized monospace width scalar ratio
+const CHAR_WIDTH_ESTIMATE = 8.5;
 
 export const TextNode = ({ id, data }: any) => {
   const updateNodeField = useStore((state) => state.updateNodeField);
   const [text, setText] = useState(data.text || '');
   const [dimensions, setDimensions] = useState({ width: MIN_WIDTH, height: MIN_HEIGHT });
 
-  // Tokenized extraction logic running safely via memoized text changes
   const variables = useMemo(() => {
     const regex = /\{\{\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\}\}/g;
     const matches: string[] = [];
@@ -29,7 +28,6 @@ export const TextNode = ({ id, data }: any) => {
     const lines = text.split('\n');
     const longestLine = Math.max(...lines.map((l: string) => l.length), 0);
     
-    // Explicit dynamic width and height tracking
     const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, longestLine * CHAR_WIDTH_ESTIMATE + 45));
     const newHeight = Math.min(400, Math.max(MIN_HEIGHT, lines.length * 22 + 65));
     
@@ -39,37 +37,36 @@ export const TextNode = ({ id, data }: any) => {
 
   return (
     <div
-      className="rounded-xl border shadow-lg bg-white overflow-hidden border-neutral-200"
+      className="base-node"
       style={{
         width: dimensions.width,
         minHeight: dimensions.height,
-        fontFamily: 'Inter, sans-serif',
-        transition: 'width 0.15s ease, height 0.15s ease' // Premium responsive snap transitions
+        transition: 'width 0.15s ease, height 0.15s ease'
       }}
     >
-      <div className="px-4 py-2.5 flex items-center gap-2 border-b border-neutral-100 bg-indigo-50/50 text-indigo-700">
-        <span className="text-base">📝</span>
-        <span className="text-sm font-semibold text-neutral-800">Dynamic Text Template</span>
+      <div className="node-header hdr-text">
+        <span>📝</span>
+        <span className="node-title">Dynamic Text Template</span>
       </div>
 
-      <div className="p-4 flex flex-col gap-1">
-        <label className="text-xs font-medium text-neutral-500">Text Content Prompt</label>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Type variables using {{ param }}"
-          className="w-full text-xs p-2 border border-neutral-200 rounded-md bg-neutral-50 text-neutral-700 outline-none focus:border-indigo-500 resize-none font-mono"
-          style={{ height: Math.max(50, dimensions.height - 75) }}
-        />
+      <div className="node-body">
+        <div className="form-group">
+          <label className="form-label">Text Content Prompt</label>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Type variables using {{ param }}"
+            className="form-textarea"
+            style={{ height: Math.max(50, dimensions.height - 75) }}
+          />
+        </div>
       </div>
 
-      {/* Main Base Output Anchor */}
       <Handle type="source" position={Position.Right} id="output" style={{ width: 9, height: 9, backgroundColor: '#6366f1', border: '2px solid #fff' }} />
 
-      {/* Stable Variables Handle Mapping with Dynamic Left Text Tags */}
       {variables.map((varName, idx) => {
         const pct = ((idx + 1) / (variables.length + 1)) * 100;
-        const handleId = `${id}-var-${varName}`; // Connection persistence identifier stability
+        const handleId = `${id}-var-${varName}`;
         return (
           <div key={handleId}>
             <Handle
@@ -98,7 +95,8 @@ export const TextNode = ({ id, data }: any) => {
                 borderRadius: '4px',
                 border: '1px solid #e2e8f0',
                 whiteSpace: 'nowrap',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                fontFamily: 'sans-serif'
               }}
             >
               {varName}

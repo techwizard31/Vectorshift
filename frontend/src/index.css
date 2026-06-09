@@ -1,13 +1,302 @@
+/* Core Layout Settings */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8fafc;
+  color: #334155;
+  overflow: hidden;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Pipeline Toolbar Structure */
+.pipeline-toolbar {
+  width: 100%;
+  height: 80px;
+  background-color: #0f172a;
+  border-bottom: 1px solid #1e293b;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-r: 1px solid #334155;
+  padding-right: 24px;
+}
+
+.brand-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.toolbar-palette {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Inventory Draggable Items */
+.draggable-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: grab;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.draggable-node:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  transform: translateY(-1px);
+}
+
+.draggable-node:active {
+  cursor: grabbing;
+}
+
+/* Base Abstract Node Frame */
+.base-node {
+  width: 240px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px -3px rgb(0 0 0 / 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.base-node:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* Unified Node Header Plates */
+.node-header {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.node-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Semantic Core Color Schemes */
+.hdr-input { background-color: #ecfdf5; color: #047857; }
+.hdr-output { background-color: #fff1f2; color: #be123c; }
+.hdr-llm { background-color: #f5f3ff; color: #6d28d9; }
+.hdr-text { background-color: #e0e7ff; color: #4338ca; }
+.hdr-api { background-color: #eff6ff; color: #1d4ed8; }
+.hdr-router { background-color: #fffbeb; color: #b45309; }
+.hdr-parser { background-color: #ecfeff; color: #0e7490; }
+.hdr-auth { background-color: #f8fafc; color: #475569; }
+.hdr-delay { background-color: #fff7ed; color: #c2410c; }
+
+/* Dynamic Inner Forms Layout */
+.node-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #ffffff;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  font-size: 12px;
+  padding: 6px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: #f8fafc;
+  color: #334155;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: #6366f1;
+  background-color: #ffffff;
+}
+
+.form-textarea {
+  resize: none;
+  font-family: monospace;
+}
+
+/* Master Submission CTA Engine */
+.submit-btn-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+.submit-btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #ffffff;
+  border: none;
+  background-color: #4f46e5;
+  box-shadow: 0 4px 6px -1px rgb(79 70 229 / 0.2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #4338ca;
+  transform: translateY(-1px);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.submit-btn:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Premium Diagnostics Modal Viewport */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  border: 1px solid #f1f5f9;
+  animation: modalPop 0.2s ease-out forwards;
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.modal-metrics-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  border-bottom: 1px solid #f8fafc;
+  padding-bottom: 8px;
+}
+
+.metric-label {
+  color: #64748b;
+  font-medium: 500;
+}
+
+.metric-badge {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+}
+
+.status-box {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-success {
+  background-color: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.status-error {
+  background-color: #fff5f5;
+  color: #c53030;
+  border: 1px solid #feb2b2;
+}
+
+.modal-close-btn {
+  width: 100%;
+  background-color: #1e293b;
+  color: #ffffff;
+  padding: 10px 0;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.modal-close-btn:hover {
+  background-color: #0f172a;
 }

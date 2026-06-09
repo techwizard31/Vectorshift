@@ -1,4 +1,3 @@
-// src/draggableNode.tsx
 import React from 'react';
 
 export const DraggableNode = ({ type, label, icon }: { type: string; label: string; icon: string }) => {
@@ -9,7 +8,7 @@ export const DraggableNode = ({ type, label, icon }: { type: string; label: stri
         e.dataTransfer.effectAllowed = 'move';
       }}
       draggable
-      className="flex items-center gap-2 px-3 py-2 bg-white border border-neutral-200 rounded-xl cursor-grab hover:shadow-md transition-all active:cursor-grabbing text-xs font-semibold text-neutral-700 select-none"
+      className="draggable-node"
     >
       <span>{icon}</span>
       <span>{label}</span>

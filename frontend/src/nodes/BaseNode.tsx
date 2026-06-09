@@ -50,23 +50,23 @@ export const BaseNode = memo(({ id, data, schema, children }: BaseNodeProps) => 
   };
 
   return (
-    <div className={`rounded-xl border shadow-lg bg-white overflow-hidden border-neutral-200 transition-shadow hover:shadow-xl`} style={{ width: 240, fontFamily: 'Inter, sans-serif' }}>
+    <div className="base-node">
       {/* Node Header */}
-      <div className={`px-4 py-2.5 flex items-center gap-2 border-b border-neutral-100 ${schema.color}`}>
-        <span className="text-base">{schema.icon}</span>
-        <span className="text-sm font-semibold text-neutral-800">{schema.title}</span>
+      <div className={`node-header ${schema.color}`}>
+        <span>{schema.icon}</span>
+        <span className="node-title">{schema.title}</span>
       </div>
 
-      {/* Inputs / Fields Layout */}
-      <div className="p-4 space-y-3 bg-white">
+      {/* Inputs Layout Frame */}
+      <div className="node-body">
         {schema.fields?.map((field) => (
-          <div key={field.key} className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-neutral-500">{field.label}</label>
+          <div key={field.key} className="form-group">
+            <label className="form-label">{field.label}</label>
             {field.type === 'select' ? (
               <select
                 value={data[field.key] ?? field.default}
                 onChange={(e) => updateNodeField(id, field.key, e.target.value)}
-                className="w-full text-xs px-2.5 py-1.5 border border-neutral-200 rounded-md bg-neutral-50 text-neutral-700 outline-none focus:border-indigo-500"
+                className="form-select"
               >
                 {field.options?.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -77,7 +77,7 @@ export const BaseNode = memo(({ id, data, schema, children }: BaseNodeProps) => 
                 type={field.type}
                 value={data[field.key] ?? field.default ?? ''}
                 onChange={(e) => updateNodeField(id, field.key, e.target.value)}
-                className="w-full text-xs px-2.5 py-1.5 border border-neutral-200 rounded-md bg-neutral-50 text-neutral-700 outline-none focus:border-indigo-500"
+                className="form-input"
               />
             )}
           </div>
@@ -85,7 +85,7 @@ export const BaseNode = memo(({ id, data, schema, children }: BaseNodeProps) => 
         {children}
       </div>
 
-      {/* Dynamic Render Canvas Connection Points */}
+      {/* Canvas Wire Hooks */}
       {schema.handles.map((handle) => (
         <Handle
           key={handle.id}
@@ -104,7 +104,6 @@ export const BaseNode = memo(({ id, data, schema, children }: BaseNodeProps) => 
     </div>
   );
 }, (prev, next) => {
-  // Optimization: Strict deep comparator block overrides panning/zoom re-renders completely
   return prev.id === next.id && JSON.stringify(prev.data) === JSON.stringify(next.data);
 });
 
