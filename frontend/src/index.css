@@ -1,9 +1,9 @@
-/* Core Layout Settings */
+/* Premium Pro Dark Theme Token System */
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #f8fafc;
-  color: #334155;
+  background-color: #0b0f19;
+  color: #f1f5f9;
   overflow: hidden;
 }
 
@@ -11,8 +11,8 @@ body {
 .pipeline-toolbar {
   width: 100%;
   height: 80px;
-  background-color: #0f172a;
-  border-bottom: 1px solid #1e293b;
+  background-color: #111827;
+  border-bottom: 1px solid #1f2937;
   display: flex;
   align-items: center;
   padding: 0 24px;
@@ -24,7 +24,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-r: 1px solid #334155;
+  border-right: 1px solid #374151;
   padding-right: 24px;
 }
 
@@ -48,39 +48,52 @@ body {
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: #1f2937;
+  border: 1px solid #374151;
   border-radius: 12px;
   cursor: grab;
   font-size: 12px;
   font-weight: 600;
-  color: #475569;
+  color: #e5e7eb;
   user-select: none;
   transition: all 0.2s ease;
 }
 
 .draggable-node:hover {
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  background-color: #374151;
+  border-color: #4b5563;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
 }
 
-.draggable-node:active {
-  cursor: grabbing;
+/* Canvas Workspace Container Layouts */
+.canvas-container {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 80px);
+  background-color: #0b0f19;
 }
 
-/* Base Abstract Node Frame */
+.reactflow-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+/* Base Abstract Dark Node Frame */
 .base-node {
   width: 240px;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: #111827;
+  border: 1px solid #1f2937;
   border-radius: 14px;
-  box-shadow: 0 4px 10px -3px rgb(0 0 0 / 0.08);
-  overflow: hidden;
-  transition: box-shadow 0.2s ease;
+  box-sizing: border-box;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  overflow: visible; /* Allows labels to render completely outside */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .base-node:hover {
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  border-color: #374151;
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7);
 }
 
 /* Unified Node Header Plates */
@@ -89,25 +102,25 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #1f2937;
 }
 
 .node-title {
   font-size: 13px;
   font-weight: 600;
-  color: #1e293b;
+  color: #f3f4f6;
 }
 
-/* Semantic Core Color Schemes */
-.hdr-input { background-color: #ecfdf5; color: #047857; }
-.hdr-output { background-color: #fff1f2; color: #be123c; }
-.hdr-llm { background-color: #f5f3ff; color: #6d28d9; }
-.hdr-text { background-color: #e0e7ff; color: #4338ca; }
-.hdr-api { background-color: #eff6ff; color: #1d4ed8; }
-.hdr-router { background-color: #fffbeb; color: #b45309; }
-.hdr-parser { background-color: #ecfeff; color: #0e7490; }
-.hdr-auth { background-color: #f8fafc; color: #475569; }
-.hdr-delay { background-color: #fff7ed; color: #c2410c; }
+/* Semantic Dark Mode Header Schemes */
+.hdr-input { background-color: rgba(4, 120, 87, 0.15); color: #34d399; }
+.hdr-output { background-color: rgba(190, 18, 60, 0.15); color: #fb7185; }
+.hdr-llm { background-color: rgba(109, 40, 217, 0.15); color: #a78bfa; }
+.hdr-text { background-color: rgba(67, 56, 202, 0.15); color: #818cf8; }
+.hdr-api { background-color: rgba(29, 78, 216, 0.15); color: #60a5fa; }
+.hdr-router { background-color: rgba(180, 83, 9, 0.15); color: #fbbf24; }
+.hdr-parser { background-color: rgba(14, 116, 140, 0.15); color: #22d3ee; }
+.hdr-auth { background-color: rgba(71, 85, 105, 0.15); color: #cbd5e1; }
+.hdr-delay { background-color: rgba(194, 65, 12, 0.15); color: #ff9d72; }
 
 /* Dynamic Inner Forms Layout */
 .node-body {
@@ -115,7 +128,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background-color: #ffffff;
+  background-color: #111827;
+  border-radius: 0 0 14px 14px;
 }
 
 .form-group {
@@ -126,30 +140,66 @@ body {
 
 .form-label {
   font-size: 11px;
-  font-weight: 500;
-  color: #64748b;
+  font-weight: 600;
+  color: #9ca3af;
 }
 
 .form-input, .form-select, .form-textarea {
   width: 100%;
   font-size: 12px;
-  padding: 6px 10px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  background-color: #f8fafc;
-  color: #334155;
+  padding: 8px 10px;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  background-color: #0f172a;
+  color: #f9fafb;
   outline: none;
   box-sizing: border-box;
 }
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   border-color: #6366f1;
-  background-color: #ffffff;
+  background-color: #0f172a;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
 .form-textarea {
   resize: none;
   font-family: monospace;
+}
+
+/* HIGH-VISIBILITY CONNECTION HANDLES OVERRIDE (Fixes the tiny hand icon problem) */
+.react-flow__handle {
+  width: 12px !important;
+  height: 12px !important;
+  border: 2px solid #111827 !important; /* Contrasting rim against dark nodes */
+  border-radius: 50% !important;
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease !important;
+  cursor: crosshair !important;
+  z-index: 1000 !important;
+}
+
+/* Color-coded handle indicators based on flow state rules */
+.react-flow__handle-right { background-color: #6366f1 !important; box-shadow: 0 0 8px rgba(99, 102, 241, 0.7); }
+.react-flow__handle-left { background-color: #3b82f6 !important; box-shadow: 0 0 8px rgba(59, 130, 246, 0.7); }
+
+.react-flow__handle:hover {
+  transform: scale(1.4);
+  box-shadow: 0 0 14px currentColor !important;
+}
+
+/* HIGH-VISIBILITY INTERACTIVE LINES (Fixes the delete connection problem) */
+.react-flow__edge-path {
+  stroke: #4b5563 !important;
+  stroke-width: 2.5px !important;
+  transition: stroke 0.15s ease, stroke-width 0.15s ease;
+}
+
+/* When connection lines are hovered, turn bright red and glow to signal deletion on click */
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #ef4444 !important; 
+  stroke-width: 3.5px !important;
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.8));
+  cursor: pointer;
 }
 
 /* Master Submission CTA Engine */
@@ -168,33 +218,32 @@ body {
   font-size: 13px;
   color: #ffffff;
   border: none;
-  background-color: #4f46e5;
-  box-shadow: 0 4px 6px -1px rgb(79 70 229 / 0.2);
+  background-color: #6366f1;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background-color: #4338ca;
+  background-color: #4f46e5;
   transform: translateY(-1px);
-}
-
-.submit-btn:active:not(:disabled) {
-  transform: scale(0.97);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
 }
 
 .submit-btn:disabled {
-  background-color: #94a3b8;
+  background-color: #4b5563;
+  color: #9ca3af;
   cursor: not-allowed;
-  opacity: 0.8;
+  box-shadow: none;
+  opacity: 0.6;
 }
 
 /* Premium Diagnostics Modal Viewport */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(4px);
+  background-color: rgba(3, 7, 18, 0.6);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,14 +251,14 @@ body {
 }
 
 .modal-card {
-  background-color: #ffffff;
-  border-radius: 16px;
+  background-color: #111827;
+  border-radius: 20px;
   padding: 24px;
   max-width: 360px;
   width: 100%;
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  border: 1px solid #f1f5f9;
-  animation: modalPop 0.2s ease-out forwards;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  border: 1px solid #1f2937;
+  animation: modalPop 0.2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 @keyframes modalPop {
@@ -221,13 +270,13 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .modal-title {
   font-size: 15px;
   font-weight: 700;
-  color: #1e293b;
+  color: #ffffff;
   margin: 0;
 }
 
@@ -243,18 +292,17 @@ body {
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  border-bottom: 1px solid #f8fafc;
-  padding-bottom: 8px;
+  border-bottom: 1px solid #1f2937;
+  padding-bottom: 10px;
 }
 
 .metric-label {
-  color: #64748b;
-  font-medium: 500;
+  color: #9ca3af;
 }
 
 .metric-badge {
-  background-color: #f1f5f9;
-  color: #1e293b;
+  background-color: #1f2937;
+  color: #ffffff;
   font-weight: 700;
   padding: 2px 10px;
   border-radius: 9999px;
@@ -273,23 +321,23 @@ body {
 }
 
 .status-success {
-  background-color: #f0fdf4;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
 }
 
 .status-error {
-  background-color: #fff5f5;
-  color: #c53030;
-  border: 1px solid #feb2b2;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
 }
 
 .modal-close-btn {
   width: 100%;
-  background-color: #1e293b;
+  background-color: #374151;
   color: #ffffff;
-  padding: 10px 0;
-  border-radius: 10px;
+  padding: 12px 0;
+  border-radius: 12px;
   font-size: 12px;
   font-weight: 600;
   border: none;
@@ -298,5 +346,5 @@ body {
 }
 
 .modal-close-btn:hover {
-  background-color: #0f172a;
+  background-color: #4b5563;
 }

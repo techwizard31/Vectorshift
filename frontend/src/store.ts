@@ -7,6 +7,7 @@ interface StoreState {
   nodeIDs: Record<string, number>;
   getNodeID: (type: string) => string;
   addNode: (node: Node) => void;
+  deleteEdge: (edgeId: string) => void; // Explicit delete hook action
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -16,7 +17,7 @@ interface StoreState {
 export const useStore = create<StoreState>((set, get) => ({
   nodes: [],
   edges: [],
-  nodeIDs: {}, // Fixed: Explicitly initialized to prevent runtime crashes
+  nodeIDs: {},
   getNodeID: (type) => {
     const newIDs = { ...get().nodeIDs };
     if (newIDs[type] === undefined) {
@@ -28,6 +29,9 @@ export const useStore = create<StoreState>((set, get) => ({
   },
   addNode: (node) => {
     set({ nodes: [...get().nodes, node] });
+  },
+  deleteEdge: (edgeId) => {
+    set({ edges: get().edges.filter((e) => e.id !== edgeId) });
   },
   onNodesChange: (changes) => {
     set({ nodes: applyNodeChanges(changes, get().nodes) });
