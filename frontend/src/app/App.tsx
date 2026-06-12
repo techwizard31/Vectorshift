@@ -1,19 +1,16 @@
-import React from 'react';
 import { MotionConfig } from 'motion/react';
-import { PipelineToolbar } from './toolbar.tsx';
-import { PipelineUI } from './ui.tsx';
+import { PipelineToolbar } from '../features/toolbar/PipelineToolbar';
+import { PipelineCanvas } from '../features/canvas/PipelineCanvas';
 
-function App() {
+export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="app-shell">
         <PipelineToolbar />
         <main className="workspace-main">
-          <PipelineUI />
+          <PipelineCanvas />
         </main>
       </div>
     </MotionConfig>
   );
 }
-
-export default App;

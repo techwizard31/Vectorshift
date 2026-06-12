@@ -1,0 +1,248 @@
+/* Canvas */
+.canvas-container {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--color-canvas);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(99, 102, 241, 0.06) 0%, transparent 70%),
+    linear-gradient(rgba(63, 65, 69, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 65, 69, 0.15) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px, 24px 24px;
+  overflow: hidden;
+}
+
+.canvas-bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.canvas-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(8, 9, 10, 0.35) 100%);
+}
+
+.reactflow-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+/* Edges */
+.react-flow__edge-path {
+  stroke: var(--color-border-hover) !important;
+  stroke-width: 2px !important;
+  transition: stroke 0.15s ease, stroke-width 0.15s ease;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #ef4444 !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.7));
+  cursor: pointer;
+}
+
+.react-flow__connection-path {
+  stroke: var(--color-accent) !important;
+  stroke-width: 2px !important;
+}
+
+/* React Flow chrome */
+.react-flow__controls {
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-md) !important;
+  overflow: hidden;
+  box-shadow: none !important;
+}
+
+.react-flow__controls-button {
+  background-color: var(--color-surface-2) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  fill: var(--color-text-secondary) !important;
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.react-flow__controls-button:hover {
+  background-color: var(--color-surface-3) !important;
+  fill: var(--color-text-primary) !important;
+}
+
+.minimap-panel {
+  pointer-events: all;
+  z-index: 8;
+}
+
+.minimap-panel:not(:has(.minimap-card--dragging)) {
+  transition: left 0.25s ease, top 0.25s ease, right 0.25s ease, bottom 0.25s ease;
+}
+
+.minimap-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: 240px;
+  position: relative;
+  z-index: 10;
+  transition: grid-template-rows 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.minimap-card--collapsed {
+  grid-template-rows: auto 0fr;
+}
+
+.minimap-card--dragging {
+  transition: none;
+  opacity: 0.92;
+}
+
+.minimap-card--collapsed .minimap-header {
+  border-bottom: 2px solid rgba(139, 92, 246, 0.45);
+  border-radius: var(--radius-md);
+}
+
+.minimap-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 10px 14px;
+  background: rgba(20, 21, 22, 0.98);
+  border: 2px solid rgba(139, 92, 246, 0.45);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition:
+    border-radius 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    border-bottom-color 0.35s ease,
+    border-bottom-width 0.35s ease;
+}
+
+.minimap-card--dragging .minimap-header {
+  cursor: grabbing;
+}
+
+.minimap-drag-hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.minimap-label {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.minimap-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.minimap-action-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.minimap-action-btn:hover {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: var(--color-text-primary);
+}
+
+.minimap-collapse-icon {
+  display: inline-flex;
+  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.minimap-collapse-btn--collapsed .minimap-collapse-icon {
+  transform: rotate(180deg);
+}
+
+.minimap-body {
+  position: relative;
+  width: 240px;
+  min-height: 0;
+  overflow: hidden;
+  border: 2px solid rgba(139, 92, 246, 0.45);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background-color: rgba(15, 16, 17, 0.95);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.55),
+    0 0 24px rgba(99, 102, 241, 0.15);
+  opacity: 1;
+  transition:
+    opacity 0.32s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.minimap-body--collapsed {
+  opacity: 0;
+  border-color: transparent;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.minimap-body-inner {
+  width: 100%;
+  height: 160px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.minimap-body .react-flow__minimap.canvas-minimap {
+  position: relative !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.react-flow__minimap-mask {
+  fill: rgba(8, 9, 10, 0.5) !important;
+}
+
+.react-flow__minimap-node {
+  fill-opacity: 1 !important;
+}
+

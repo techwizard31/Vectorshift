@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface SelectOption {
   label: string;
@@ -14,12 +14,12 @@ interface CustomSelectProps {
 export const CustomSelect = ({ value, options, onChange }: CustomSelectProps) => {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
-
-  const selected = options.find((o) => o.value === value) ?? options[0];
+  const selected = options.find((option) => option.value === value) ?? options[0];
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target;
+      if (wrapRef.current && target instanceof globalThis.Node && !wrapRef.current.contains(target)) {
         setOpen(false);
       }
     };
@@ -28,10 +28,7 @@ export const CustomSelect = ({ value, options, onChange }: CustomSelectProps) =>
   }, []);
 
   return (
-    <div
-      ref={wrapRef}
-      className={`custom-select ${open ? 'custom-select--open' : ''}`}
-    >
+    <div ref={wrapRef} className={`custom-select ${open ? 'custom-select--open' : ''}`}>
       <button
         type="button"
         className="custom-select-trigger"
@@ -44,18 +41,18 @@ export const CustomSelect = ({ value, options, onChange }: CustomSelectProps) =>
       </button>
       {open && (
         <ul className="custom-select-menu" role="listbox">
-          {options.map((opt) => (
-            <li key={opt.value} role="option" aria-selected={opt.value === value}>
+          {options.map((option) => (
+            <li key={option.value} role="option" aria-selected={option.value === value}>
               <button
                 type="button"
-                className={`custom-select-option ${opt.value === value ? 'custom-select-option--active' : ''}`}
+                className={`custom-select-option ${option.value === value ? 'custom-select-option--active' : ''}`}
                 onClick={() => {
-                  onChange(opt.value);
+                  onChange(option.value);
                   setOpen(false);
                 }}
               >
-                {opt.label}
-                {opt.value === value && <span className="custom-select-check">✓</span>}
+                {option.label}
+                {option.value === value && <span className="custom-select-check">✓</span>}
               </button>
             </li>
           ))}

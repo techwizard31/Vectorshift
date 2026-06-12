@@ -1,21 +1,31 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { Fragment, useState, useEffect, useMemo } from 'react';
+import type { NodeProps } from 'reactflow';
 import { Handle, Position } from 'reactflow';
-import { useStore } from '../store.ts';
-import { NodeDeleteButton } from '../components/NodeDeleteButton.tsx';
+import { usePipelineStore } from '../store/pipelineStore';
+import { NodeChrome } from '../components/NodeChrome';
+import { TEXT_SCHEMA } from './schemas/core';
+import type { NodeData } from '../types/nodes';
+import {
+  TEXT_NODE_CHAR_WIDTH_ESTIMATE,
+  TEXT_NODE_HORIZONTAL_PADDING,
+  TEXT_NODE_MAX_WIDTH,
+  TEXT_NODE_MIN_ROWS,
+  TEXT_NODE_MIN_WIDTH,
+} from '../constants/layout';
+import { getDistributedHandleStyle } from '../utils/handleLayout';
 
-const MIN_WIDTH = 220;
-const MAX_WIDTH = 600;
-const CHAR_WIDTH_ESTIMATE = 8.5;
+const VARIABLE_REGEX = /\{\{\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\}\}/g;
 
-export const TextNode = ({ id, data }: any) => {
-  const updateNodeField = useStore((state) => state.updateNodeField);
-  const [text, setText] = useState(data.text || '');
-  const [dimensions, setDimensions] = useState({ width: MIN_WIDTH, height: 2 });
+export const TextNode = ({ id, data }: NodeProps<NodeData>) => {
+  const updateNodeField = usePipelineStore((state) => state.updateNodeField);
+  const [text, setText] = useState(String(data.text ?? ''));
+  const [width, setWidth] = useState(TEXT_NODE_MIN_WIDTH);
+  const [rowCount, setRowCount] = useState(TEXT_NODE_MIN_ROWS);
 
   const variables = useMemo(() => {
-    const regex = /\{\{\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\}\}/g;
     const matches: string[] = [];
-    let match;
+    let match: RegExpExecArray | null;
+    const regex = new RegExp(VARIABLE_REGEX.source, VARIABLE_REGEX.flags);
     while ((match = regex.exec(text)) !== null) {
       if (!matches.includes(match[1])) {
         matches.push(match[1]);
@@ -26,29 +36,24 @@ export const TextNode = ({ id, data }: any) => {
 
   useEffect(() => {
     const lines = text.split('\n');
-    const longestLine = Math.max(...lines.map((l: string) => l.length), 0);
-
-    const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, longestLine * CHAR_WIDTH_ESTIMATE + 52));
-    const lineCount = Math.max(lines.length, 2);
-
-    setDimensions({ width: newWidth, height: lineCount });
+    const longestLine = Math.max(...lines.map((line) => line.length), 0);
+    const nextWidth = Math.min(
+      TEXT_NODE_MAX_WIDTH,
+      Math.max(TEXT_NODE_MIN_WIDTH, longestLine * TEXT_NODE_CHAR_WIDTH_ESTIMATE + TEXT_NODE_HORIZONTAL_PADDING),
+    );
+    setWidth(nextWidth);
+    setRowCount(Math.max(lines.length, TEXT_NODE_MIN_ROWS));
     updateNodeField(id, 'text', text);
   }, [text, id, updateNodeField]);
 
-  const lineCount = dimensions.height;
-
   return (
-    <div
-      className="base-node text-node-elastic"
-      style={{ width: dimensions.width }}
-    >
-      <div className="node-accent-stripe hdr-text" />
-      <div className="node-header hdr-text">
-        <span>📝</span>
-        <span className="node-title">Dynamic Text Template</span>
-        <NodeDeleteButton nodeId={id} />
-      </div>
-
+    <div className="base-node text-node-elastic" style={{ width }}>
+      <NodeChrome
+        nodeId={id}
+        icon={TEXT_SCHEMA.icon}
+        title={TEXT_SCHEMA.title}
+        headerVariant={TEXT_SCHEMA.headerVariant}
+      />
       <div className="node-body">
         <div className="form-group">
           <label className="form-label">Text Content Prompt</label>
@@ -57,31 +62,28 @@ export const TextNode = ({ id, data }: any) => {
             onChange={(e) => setText(e.target.value)}
             placeholder="Type variables using {{ param }}"
             className="form-textarea text-node-textarea"
-            rows={lineCount}
+            rows={rowCount}
           />
         </div>
       </div>
 
       <Handle type="source" position={Position.Right} id="output" />
 
-      {variables.map((varName, idx) => {
-        const pct = ((idx + 1) / (variables.length + 1)) * 100;
+      {variables.map((varName, index) => {
         const handleId = `${id}-var-${varName}`;
+        const handleStyle = getDistributedHandleStyle(index, variables.length);
         return (
-          <React.Fragment key={handleId}>
+          <Fragment key={handleId}>
             <Handle
               type="target"
               position={Position.Left}
               id={handleId}
-              style={{ top: `${pct}%` }}
+              style={handleStyle}
             />
-            <div
-              className="text-node-var-label"
-              style={{ top: `${pct}%` }}
-            >
+            <div className="text-node-var-label" style={handleStyle}>
               {varName}
             </div>
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </div>

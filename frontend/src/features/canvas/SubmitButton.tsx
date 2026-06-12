@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Node, Edge } from 'reactflow';
-import { ResultModal } from './components/ResultModal.tsx';
-
-interface PipelineResult {
-  num_nodes: number;
-  num_edges: number;
-  is_dag: boolean;
-}
+import type { Edge, Node } from 'reactflow';
+import { ResultModal } from '../../components/ResultModal';
+import { BACKEND_START_HINT, PIPELINE_PARSE_URL } from '../../constants/api';
+import { SPRING_SNAPPY } from '../../constants/motion';
+import type { PipelineResult } from '../../types/pipeline';
+import type { NodeData } from '../../types/nodes';
 
 interface SubmitButtonProps {
-  nodes: Node[];
+  nodes: Node<NodeData>[];
   edges: Edge[];
 }
 
@@ -25,7 +23,7 @@ export const SubmitButton = ({ nodes, edges }: SubmitButtonProps) => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:8000/pipelines/parse', {
+      const response = await fetch(PIPELINE_PARSE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nodes, edges }),
@@ -40,11 +38,7 @@ export const SubmitButton = ({ nodes, edges }: SubmitButtonProps) => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       const isNetworkError = message.includes('fetch') || message.includes('Failed to fetch');
-      setError(
-        isNetworkError
-          ? 'Cannot reach backend at localhost:8000. Start it with: uvicorn main:app --reload'
-          : message
-      );
+      setError(isNetworkError ? BACKEND_START_HINT : message);
     } finally {
       setIsLoading(false);
     }
@@ -64,7 +58,7 @@ export const SubmitButton = ({ nodes, edges }: SubmitButtonProps) => {
           className="submit-btn"
           whileHover={isLoading ? {} : { scale: 1.03 }}
           whileTap={isLoading ? {} : { scale: 0.97 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+          transition={SPRING_SNAPPY}
         >
           {isLoading && (
             <motion.span

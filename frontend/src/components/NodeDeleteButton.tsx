@@ -1,12 +1,11 @@
-import React from 'react';
-import { useStore } from '../store.ts';
+import { usePipelineStore } from '../store/pipelineStore';
 
 interface NodeDeleteButtonProps {
   nodeId: string;
 }
 
 export const NodeDeleteButton = ({ nodeId }: NodeDeleteButtonProps) => {
-  const deleteNode = useStore((state) => state.deleteNode);
+  const deleteNode = usePipelineStore((state) => state.deleteNode);
 
   return (
     <button
@@ -14,8 +13,8 @@ export const NodeDeleteButton = ({ nodeId }: NodeDeleteButtonProps) => {
       className="node-delete-btn"
       aria-label="Delete node"
       title="Delete node"
-      onClick={(e) => {
-        e.stopPropagation();
+      onClick={(event) => {
+        event.stopPropagation();
         deleteNode(nodeId);
       }}
     >
