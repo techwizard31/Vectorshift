@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { Node, Edge } from 'reactflow';
 import { ResultModal } from './components/ResultModal.tsx';
 
@@ -57,13 +58,23 @@ export const SubmitButton = ({ nodes, edges }: SubmitButtonProps) => {
   return (
     <>
       <div className="submit-btn-container">
-        <button
+        <motion.button
           onClick={handleSubmit}
           disabled={isLoading}
           className="submit-btn"
+          whileHover={isLoading ? {} : { scale: 1.03 }}
+          whileTap={isLoading ? {} : { scale: 0.97 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         >
-          {isLoading ? 'Analyzing Graph...' : 'Submit Pipeline Architecture'}
-        </button>
+          {isLoading && (
+            <motion.span
+              className="submit-spinner"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+            />
+          )}
+          {isLoading ? 'Analyzing Graph...' : 'Submit Pipeline'}
+        </motion.button>
       </div>
       <ResultModal
         isOpen={result !== null || error !== null}

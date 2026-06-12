@@ -1,6 +1,8 @@
 import React, { memo } from "react";
 import { Handle, Position } from "reactflow";
 import { useStore } from "../store.ts";
+import { CustomSelect } from "../components/CustomSelect.tsx";
+import { NodeDeleteButton } from "../components/NodeDeleteButton.tsx";
 
 export interface NodeField {
   type: "text" | "number" | "select";
@@ -54,10 +56,11 @@ export const BaseNode = memo(
 
     return (
       <div className="base-node">
-        {/* Node Header */}
+        <div className={`node-accent-stripe ${schema.color}`} />
         <div className={`node-header ${schema.color}`}>
           <span>{schema.icon}</span>
           <span className="node-title">{schema.title}</span>
+          <NodeDeleteButton nodeId={id} />
         </div>
         {/* Inputs Layout Frame */}
         <div className="node-body">
@@ -65,19 +68,44 @@ export const BaseNode = memo(
             <div key={field.key} className="form-group">
               <label className="form-label">{field.label}</label>
               {field.type === "select" ? (
-                <select
+                <CustomSelect
                   value={data[field.key] ?? field.default}
-                  onChange={(e) =>
-                    updateNodeField(id, field.key, e.target.value)
-                  }
-                  className="form-select"
-                >
-                  {field.options?.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
+                  options={field.options ?? []}
+                  onChange={(val) => updateNodeField(id, field.key, val)}
+                />
+              ) : field.type === "number" ? (
+                <div className="form-number-wrap">
+                  <input
+                    type="number"
+                    value={data[field.key] ?? field.default ?? ""}
+                    onChange={(e) =>
+                      updateNodeField(id, field.key, e.target.value)
+                    }
+                    className="form-input form-input-number"
+                  />
+                  <div className="form-number-steppers">
+                    <button
+                      type="button"
+                      className="form-number-step form-number-step--up"
+                      aria-label="Increase value"
+                      onClick={() => {
+                        const step = field.key === "ms" ? 100 : 1;
+                        const current = Number(data[field.key] ?? field.default ?? 0);
+                        updateNodeField(id, field.key, String(current + step));
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="form-number-step form-number-step--down"
+                      aria-label="Decrease value"
+                      onClick={() => {
+                        const step = field.key === "ms" ? 100 : 1;
+                        const current = Number(data[field.key] ?? field.default ?? 0);
+                        updateNodeField(id, field.key, String(Math.max(0, current - step)));
+                      }}
+                    />
+                  </div>
+                </div>
               ) : (
                 <input
                   type={field.type}

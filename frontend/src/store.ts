@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { addEdge, applyNodeChanges, applyEdgeChanges, Connection, Edge, Node, OnNodesChange, OnEdgesChange, OnConnect, MarkerType } from 'reactflow';
+import { addEdge, applyNodeChanges, applyEdgeChanges, Edge, Node, OnNodesChange, OnEdgesChange, OnConnect, MarkerType } from 'reactflow';
 
 interface StoreState {
   nodes: Node[];
@@ -7,6 +7,7 @@ interface StoreState {
   nodeIDs: Record<string, number>;
   getNodeID: (type: string) => string;
   addNode: (node: Node) => void;
+  deleteNode: (nodeId: string) => void;
   deleteEdge: (edgeId: string) => void; // Explicit delete hook action
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
@@ -30,11 +31,29 @@ export const useStore = create<StoreState>((set, get) => ({
   addNode: (node) => {
     set({ nodes: [...get().nodes, node] });
   },
+  deleteNode: (nodeId) => {
+    set({
+      nodes: get().nodes.filter((n) => n.id !== nodeId),
+      edges: get().edges.filter((e) => e.source !== nodeId && e.target !== nodeId),
+    });
+  },
   deleteEdge: (edgeId) => {
     set({ edges: get().edges.filter((e) => e.id !== edgeId) });
   },
   onNodesChange: (changes) => {
-    set({ nodes: applyNodeChanges(changes, get().nodes) });
+    const removedIds = changes
+      .filter((change) => change.type === 'remove')
+      .map((change) => change.id);
+
+    const nodes = applyNodeChanges(changes, get().nodes);
+    const edges =
+      removedIds.length > 0
+        ? get().edges.filter(
+            (e) => !removedIds.includes(e.source) && !removedIds.includes(e.target)
+          )
+        : get().edges;
+
+    set({ nodes, edges });
   },
   onEdgesChange: (changes) => {
     set({ edges: applyEdgeChanges(changes, get().edges) });
