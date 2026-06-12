@@ -4,7 +4,7 @@ import { PipelineUI } from './ui.tsx';
 
 function App() {
   return (
-    <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="app-shell">
       <PipelineToolbar />
       <PipelineUI />
     </div>

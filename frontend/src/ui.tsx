@@ -6,7 +6,6 @@ import { InputNode, OutputNode, LLMNode } from './nodes/SimpleNodes.tsx';
 import { TextNode } from './nodes/TextNode.tsx';
 import { APIRequestNode, ConditionalRouterNode, JSONParserNode, AuthNode, DelayNode } from './nodes/CustomNodes.tsx';
 import { SubmitButton } from './submit.tsx';
-import { ResultModal } from './components/ResultModal.tsx';
 import 'reactflow/dist/style.css';
 
 const NODE_TYPES = {
@@ -35,8 +34,6 @@ const selector = (state: any) => ({
 export const PipelineUI = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [modalData, setModalData] = useState<any>(null);
 
   const { nodes, edges, getNodeID, addNode, deleteEdge, onNodesChange, onEdgesChange, onConnect } = useStore(selector, shallow);
 
@@ -72,24 +69,6 @@ export const PipelineUI = () => {
     deleteEdge(edge.id);
   }, [deleteEdge]);
 
-  const handlePipelineSubmit = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('http://localhost:8000/pipelines/parse', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nodes, edges }),
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const result = await response.json();
-      setModalData(result);
-    } catch (err) {
-      console.error('Submission pipeline execution error:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="canvas-container">
       <div ref={reactFlowWrapper} className="reactflow-wrapper">
@@ -113,8 +92,7 @@ export const PipelineUI = () => {
           <MiniMap nodeStrokeColor={() => '#6366f1'} nodeColor={() => '#111827'} maskColor="rgba(0,0,0,0.4)" />
         </ReactFlow>
       </div>
-      <SubmitButton isLoading={isLoading} onClick={handlePipelineSubmit} />
-      <ResultModal isOpen={modalData !== null} onClose={() => setModalData(null)} result={modalData} />
+      <SubmitButton nodes={nodes} edges={edges} />
     </div>
   );
 };

@@ -27,21 +27,20 @@ export const TextNode = ({ id, data }: any) => {
   useEffect(() => {
     const lines = text.split('\n');
     const longestLine = Math.max(...lines.map((l: string) => l.length), 0);
-    
+
     const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, longestLine * CHAR_WIDTH_ESTIMATE + 45));
     const newHeight = Math.min(400, Math.max(MIN_HEIGHT, lines.length * 22 + 65));
-    
+
     setDimensions({ width: newWidth, height: newHeight });
     updateNodeField(id, 'text', text);
   }, [text, id, updateNodeField]);
 
   return (
     <div
-      className="base-node"
+      className="base-node text-node-elastic"
       style={{
         width: dimensions.width,
-        minHeight: dimensions.height,
-        transition: 'width 0.15s ease, height 0.15s ease'
+        height: dimensions.height,
       }}
     >
       <div className="node-header hdr-text">
@@ -56,13 +55,13 @@ export const TextNode = ({ id, data }: any) => {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Type variables using {{ param }}"
-            className="form-textarea"
+            className="form-textarea text-node-textarea"
             style={{ height: Math.max(50, dimensions.height - 75) }}
           />
         </div>
       </div>
 
-      <Handle type="source" position={Position.Right} id="output" style={{ width: 9, height: 9, backgroundColor: '#6366f1', border: '2px solid #fff' }} />
+      <Handle type="source" position={Position.Right} id="output" />
 
       {variables.map((varName, idx) => {
         const pct = ((idx + 1) / (variables.length + 1)) * 100;
@@ -73,31 +72,11 @@ export const TextNode = ({ id, data }: any) => {
               type="target"
               position={Position.Left}
               id={handleId}
-              style={{
-                top: `${pct}%`,
-                width: 9,
-                height: 9,
-                backgroundColor: '#3b82f6',
-                border: '2px solid #fff'
-              }}
+              style={{ top: `${pct}%` }}
             />
             <div
-              style={{
-                position: 'absolute',
-                left: -78,
-                top: `${pct}%`,
-                transform: 'translateY(-50%)',
-                fontSize: 10,
-                fontWeight: 600,
-                color: '#475569',
-                backgroundColor: '#f1f5f9',
-                padding: '2px 6px',
-                borderRadius: '4px',
-                border: '1px solid #e2e8f0',
-                whiteSpace: 'nowrap',
-                pointerEvents: 'none',
-                fontFamily: 'sans-serif'
-              }}
+              className="text-node-var-label"
+              style={{ top: `${pct}%` }}
             >
               {varName}
             </div>
